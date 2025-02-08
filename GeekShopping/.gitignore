@@ -1,0 +1,38 @@
+ 
+# Compiled object files
+bin/
+obj/
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Rider / JetBrains files
+.idea/
+*.sln.iml
+
+# Build results
+**/bin/
+**/obj/
+**/out/
+
+# OS-specific files
+Thumbs.db
+.DS_Store
+
+# Package managers
+node_modules/
+packages/
+*.nupkg
+project.lock.json
+global.json
+
+# Logs
+*.log
+logs/
+
+# User-specific files
+*.vscode/
