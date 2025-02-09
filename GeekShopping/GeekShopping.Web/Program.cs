@@ -1,4 +1,4 @@
-using GeekShopping.Web.Services.IServices;
+﻿using GeekShopping.Web.Services.IServices;
 using GeekShopping.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +15,7 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
