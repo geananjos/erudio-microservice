@@ -1,4 +1,7 @@
-﻿using GeekShopping.ProductAPI.Model.Context;
+﻿using AutoMapper;
+using GeekShopping.ProductAPI.Config;
+using GeekShopping.ProductAPI.Model.Context;
+using GeekShopping.ProductAPI.Repository;
 using Microsoft.EntityFrameworkCore;
 
 namespace GeekShopping.ProductAPI
@@ -18,6 +21,12 @@ namespace GeekShopping.ProductAPI
             services.AddDbContext<SqlContext>(options =>
                 options.UseSqlServer(connection, sqlOptions =>
                     sqlOptions.EnableRetryOnFailure()));
+
+            IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
+            services.AddSingleton(mapper);
+            services.AddSingleton<IMapper>(mapper);
+
+            services.AddScoped<IProductRepository, ProductRepository>();
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();
