@@ -20,6 +20,7 @@ try
         .ConfigureServices()
         .ConfigurePipeline();
 
+    app.UseHttpsRedirection();
     app.UseRouting();
     app.UseIdentityServer();
     app.UseAuthorization();
