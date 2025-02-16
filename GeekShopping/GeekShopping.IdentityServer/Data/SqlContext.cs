@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using GeekShopping.IdentityServer.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace GeekShopping.IdentityServer.Model.Context
+namespace GeekShopping.IdentityServer.Data
 {
     public class SqlContext : IdentityDbContext<ApplicationUser>
     {
