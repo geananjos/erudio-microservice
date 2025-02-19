@@ -1,63 +1,35 @@
 using GeekShopping.IdentityServer.Data;
-using GeekShopping.IdentityServer.Models;
+using GeekShopping.IdentityServer.Initializer;
+using GeekShopping.IdentityServer.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Serilog;
 
-namespace GeekShopping.IdentityServer
+namespace GeekShopping.IdentityServer.Extensions
 {
-    internal static class HostingExtensions
+    public static class HostingExtensions
     {
-        public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
+        public static void ConfigureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            builder.Services.AddRazorPages();
+            services.AddDbContext<SqlContext>(options =>
+                options.UseSqlServer(configuration["SqlConnection:SqlConnectionString"]));
 
-            var connection = builder.Configuration["SqlConnection:SqlConnectionString"];
-            builder.Services.AddDbContext<SqlContext>(options =>
-                options.UseSqlServer(connection, sqlOptions =>
-                    sqlOptions.EnableRetryOnFailure()));
-
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<SqlContext>()
                 .AddDefaultTokenProviders();
 
-            builder.Services
-                .AddIdentityServer(options =>
-                {
-                    options.Events.RaiseErrorEvents = true;
-                    options.Events.RaiseInformationEvents = true;
-                    options.Events.RaiseFailureEvents = true;
-                    options.Events.RaiseSuccessEvents = true;
+            services.AddScoped<IDbInitializer, DbInitializer>();
 
-                    // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
-                    options.EmitStaticAudienceClaim = true;
-                })
-                .AddInMemoryIdentityResources(Config.IdentityResources)
-                .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryClients(Config.Clients)
+            services.AddIdentityServer()
                 .AddAspNetIdentity<ApplicationUser>();
-
-            return builder.Build();
         }
 
-        public static WebApplication ConfigurePipeline(this WebApplication app)
+        public static void InitializeDatabase(this IServiceProvider serviceProvider)
         {
-            app.UseSerilogRequestLogging();
-
-            if (app.Environment.IsDevelopment())
+            using (var scope = serviceProvider.CreateScope())
             {
-                app.UseDeveloperExceptionPage();
+                var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+                dbInitializer.Initialize();
             }
-
-            app.UseStaticFiles();
-            app.UseRouting();
-            app.UseIdentityServer();
-            app.UseAuthorization();
-
-            app.MapRazorPages()
-                .RequireAuthorization();
-
-            return app;
         }
     }
 }
