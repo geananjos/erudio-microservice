@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace GeekShopping.IdentityServer.Migrations
+namespace GeekShopping.IdentityServer.Migrations.Sql
 {
     [DbContext(typeof(SqlContext))]
-    [Migration("20250216155318_AddDefaultSecurityTablesOnDB")]
-    partial class AddDefaultSecurityTablesOnDB
+    [Migration("20250228022426_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

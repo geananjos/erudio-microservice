@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace GeekShopping.IdentityServer.Migrations
+namespace GeekShopping.IdentityServer.Migrations.Sql
 {
     /// <inheritdoc />
-    public partial class AddDefaultSecurityTablesOnDB : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

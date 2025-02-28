@@ -1,7 +1,7 @@
-﻿using GeekShopping.IdentityServer.Configuration;
+﻿using Duende.IdentityModel;
+using GeekShopping.IdentityServer.Configuration;
 using GeekShopping.IdentityServer.Data;
 using GeekShopping.IdentityServer.Model;
-using IdentityModel;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 

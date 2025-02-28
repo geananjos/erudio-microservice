@@ -1,29 +1,22 @@
-﻿using GeekShopping.IdentityServer.Data;
-using GeekShopping.IdentityServer.Initializer;
-using GeekShopping.IdentityServer.Model;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using GeekShopping.IdentityServer.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<SqlContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetSection("SqlConnection")["SqlConnectionString"]));
+builder.Services.AddRazorPages();
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<SqlContext>()
-    .AddDefaultTokenProviders();
-
-builder.Services.AddScoped<IDbInitializer, DbInitializer>();
-
-builder.Services.AddIdentityServer()
-    .AddAspNetIdentity<ApplicationUser>();
+builder.Services.ConfigureServices(builder.Configuration);
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-    dbInitializer.Initialize();
-}
+app.Services.InitializeDatabase();
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+
+app.UseIdentityServer();
+app.UseAuthorization();
+
+app.MapRazorPages();
 
 app.Run();

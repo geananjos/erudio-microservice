@@ -29,25 +29,22 @@ namespace GeekShopping.IdentityServer.Configuration
             {
                 new Client
                 {
-                    ClientId = "client",
-                    ClientSecrets = {new Secret("my_super_secret".Sha256())},
-                    AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    AllowedScopes = {"read", "write", "profile" }
-                },
-                new Client
-                {
                     ClientId = "geek_shopping",
-                    ClientSecrets = {new Secret("my_super_secret".Sha256())},
+                    ClientSecrets = { new Secret("my_super_secret".Sha256()) },
                     AllowedGrantTypes = GrantTypes.Code,
-                    RedirectUris = {"https://localhost:5004/signin-oidc"},
-                    PostLogoutRedirectUris = {"https://localhost:5004/signout-callback-oidc"},
+                    RequirePkce = false,
+                    RequireConsent = false,
+                    RedirectUris = { "https://localhost:5201/signin-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:5201/signout-callback-oidc" },
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
                         "geek_shopping"
-                    }
+                    },
+                    AllowOfflineAccess = true,
+                    AlwaysIncludeUserClaimsInIdToken = true
                 }
             };
     }
